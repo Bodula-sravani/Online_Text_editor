@@ -1,0 +1,54 @@
+﻿@model Text_Editor.Models.Document
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Document</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="id" class="control-label"></label>
+                <input asp-for="id" class="form-control" />
+                <span asp-validation-for="id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="content" class="control-label"></label>
+                <input asp-for="content" class="form-control" />
+                <span asp-validation-for="content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="createdDate" class="control-label"></label>
+                <input asp-for="createdDate" class="form-control" />
+                <span asp-validation-for="createdDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="updatedDate" class="control-label"></label>
+                <input asp-for="updatedDate" class="form-control" />
+                <span asp-validation-for="updatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input name="userId" value="@ViewBag.userId" hidden />
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="userPage" asp-route-userId="@ViewBag.userId" class="btn btn-primary btn-sm">Back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

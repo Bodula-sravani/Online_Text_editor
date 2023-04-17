@@ -1,0 +1,158 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Text_Editor.Models.Users
+
+@{
+	ViewData["Title"] = "UserPage";
+
+}
+
+
+
+<div class="text-center">
+	<h1 class="display-4">Welcome @Model.Name</h1>
+</div>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		body {
+			background-color: #f1f1f1;
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+		}
+
+		form {
+			margin: auto;
+			padding: 20px;
+			background-color: #fff;
+			box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+			width: 400px;
+			text-align: center;
+			border-radius: 10px;
+		}
+
+		.logout {
+			float: right;
+			margin-top: -40px;
+			margin-right: -20px;
+			background-color: #f44336;
+			color: white;
+			border-radius: 5px;
+			padding: 10px 20px;
+			border: none;
+			cursor: pointer;
+		}
+
+			.logout:hover {
+				background-color: #d32f2f;
+			}
+
+		input[type=text], input[type=password] {
+			padding: 10px;
+			margin: 10px 0;
+			display: block;
+			width: 100%;
+			border-radius: 5px;
+			border: none;
+			border: 1px solid #ccc;
+		}
+
+		input[type=submit] {
+			background-color: #4CAF50;
+			color: white;
+			border-radius: 5px;
+			padding: 10px 20px;
+			border: none;
+			cursor: pointer;
+		}
+
+			input[type=submit]:hover {
+				background-color: #45a049;
+			}
+
+		a {
+			color: blue;
+			text-decoration: none;
+			margin-top: 10px;
+			display: inline-block;
+		}
+
+		h2 {
+			margin-top: 0;
+		}
+
+		p {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<button class="logout" onclick="location.href='/'">Logout</button>
+	@if (ViewBag.documentList == null)
+	{
+		<p>YOU HAVE NO Document </p>
+	}
+	else
+	{
+		<p>Documents </p>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>
+						ID
+					</th>
+					<th>
+						NAME
+					</th>
+					<th>
+						created date
+					</th>
+					<th>
+						modified date
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+					<tr>
+						<td>
+						@ViewBag.documentList.id
+						</td>
+						<td>
+						@ViewBag.documentList.name
+						</td>
+						<td>
+						@ViewBag.documentList.createdDate
+						</td>
+						<td>
+						@ViewBag.documentList.updatedDate
+						</td>
+						<td>
+						@Html.ActionLink("open", "Edit", new { id=ViewBag.documentList.id})
+						</td>
+						
+					</tr>
+
+			</tbody>
+		</table>
+	}
+	<br />
+	<div>
+		<form action="Create">
+			<input name="userId" value="@Model.userId" hidden />
+			<input type="submit" value="create a document" class="btn btn-primary btn-sm">
+		</form>
+	</div>
+	<br />
+</body>
+</html>
+
+
+
+
+
