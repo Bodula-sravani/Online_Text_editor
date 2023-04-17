@@ -40,14 +40,9 @@ namespace Text_Editor.Controllers
 					user.userId = (string)reader["userId"];
 					user.Email = (string)reader["userEmail"];
 					user.Name = (string)reader["userName"];
-                    if (reader["documentId"] == null)
-                    {
-                        user.documentId = -1;
-                    }
-                    else
-                    {
-                        user.documentId = (int)reader["documentId"];
-                    }
+                    Console.WriteLine("result: " + reader["documentId"] == null);
+					Console.WriteLine("result2: " + reader["documentId"]);
+                    user.documentId = (int)reader["documentId"];
 
                 }
 				reader.Close();
@@ -179,8 +174,49 @@ namespace Text_Editor.Controllers
             }
         }
 
-        // GET: UserController/Edit/5
-        public ActionResult Edit(int id,string userid)
+        public ActionResult Exist(string userId)
+        {
+            Console.WriteLine("exist method: " + userId);
+            ViewBag.userId = userId;
+            return View();
+        }
+
+        public void addExistingDoc(int id,string userId)
+        {
+			try
+			{
+				connection.Open();
+				SqlCommand command = new SqlCommand("updateDoc", connection);
+				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@id", userId);
+				command.Parameters.AddWithValue("@docid", id);
+				command.ExecuteNonQuery();
+				connection.Close();
+			}
+			catch (SqlException ex)
+			{
+				Console.WriteLine("error: " + ex.Message);
+			}
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Exist(int id, string userId)
+        {
+			Console.WriteLine("in Exist post method");
+			Console.WriteLine("user id" + userId);
+			Console.WriteLine("doc id" + id);
+			try
+            {
+                addExistingDoc(id, userId);
+                return RedirectToAction("userPage", new { userId = userId });
+            }
+            catch
+            {
+                return View();
+            }
+        }
+		// GET: UserController/Edit/5
+		public ActionResult Edit(int id,string userid)
         {
             Console.WriteLine("in edit method: ");
             Console.WriteLine("user id: "+userid);
@@ -198,7 +234,7 @@ namespace Text_Editor.Controllers
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@id", d.id);
                 command.Parameters.AddWithValue("@content", d.content);
-                command.Parameters.AddWithValue("@updatedDate", d.updatedDate);
+                command.Parameters.AddWithValue("@updatedDate", DateTime.Now);
                 command.Parameters.AddWithValue("@name", d.name);
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -231,8 +267,9 @@ namespace Text_Editor.Controllers
 
 
         // GET: UserController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int id,string userId)
         {
+            ViewBag.userId = userId;    
             return View(getDocuments(id));
         }
 

@@ -96,11 +96,11 @@
 	<button class="logout" onclick="location.href='/'">Logout</button>
 	@if (ViewBag.documentList == null)
 	{
-		<p>YOU HAVE NO Document </p>
+		<p> NO Documents created </p>
 	}
 	else
 	{
-		<p>Documents </p>
+		<p>Your Documents</p>
 		<table class="table">
 			<thead>
 				<tr>
@@ -148,7 +148,13 @@
 	<div>
 		<form action="Create">
 			<input name="userId" value="@Model.userId" hidden />
-			<input type="submit" value="create a document" class="btn btn-primary btn-sm">
+			<input type="submit" value="create a new document" class="btn btn-primary btn-sm">
+		</form>
+	</div>
+	<div>
+		<form action="Exist">
+			<input name="userId" value="@Model.userId" hidden />
+			<input type="submit" value="Add existing document using id" class="btn btn-primary btn-sm">
 		</form>
 	</div>
 	<br />
