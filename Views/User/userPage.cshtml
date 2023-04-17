@@ -135,6 +135,9 @@
 						<td>
 						@Html.ActionLink("Open", "Edit", new { id=ViewBag.documentList.id,userid = @Model.userId})
 						</td>
+					<td>
+						@Html.ActionLink("Details", "Details", new { id=ViewBag.documentList.id,userid = @Model.userId})
+					</td>
 						
 					</tr>
 

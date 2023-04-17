@@ -111,11 +111,7 @@ namespace Text_Editor.Controllers
 			return View(currentUser);
 		}
 
-		// GET: UserController/Details/5
-		public ActionResult Details(int id)
-        {
-            return View();
-        }
+		
 
         // GET: UserController/Create
         public ActionResult Create(string userId)
@@ -232,6 +228,14 @@ namespace Text_Editor.Controllers
                 return View();
             }
         }
+
+
+        // GET: UserController/Details/5
+        public ActionResult Details(int id)
+        {
+            return View(getDocuments(id));
+        }
+
 
         // GET: UserController/Delete/5
         public ActionResult Delete(int id)

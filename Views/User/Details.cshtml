@@ -1,0 +1,45 @@
+﻿@model Text_Editor.Models.Document
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Document</h4>
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label asp-for="id" class="control-label"></label>
+            <input asp-for="id" class="form-control" />
+            <span asp-validation-for="id" class="text-danger"></span>
+        </div>
+        <div class="col-sm-4">
+            <label asp-for="name" class="control-label"></label>
+            <input asp-for="name" class="form-control" />
+            <span asp-validation-for="name" class="text-danger"></span>
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="createdDate" class="control-label"></label>
+            <input asp-for="createdDate" class="form-control" />
+            <span asp-validation-for="createdDate" class="text-danger"></span>
+        </div>
+        <div class="col-sm-3">
+            <label asp-for="updatedDate" class="control-label"></label>
+            <input asp-for="updatedDate" class="form-control" />
+            <span asp-validation-for="updatedDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="content" class="control-label"></label>
+        <textarea asp-for="content" class="form-control" rows="10"></textarea>
+        <span asp-validation-for="content" class="text-danger"></span>
+    </div>
+
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id ,userid = ViewBag.userId}) |
+    <a asp-action="userPage" asp-route-userId="@ViewBag.userId" class="btn btn-primary btn-sm">Back</a>
+</div>
