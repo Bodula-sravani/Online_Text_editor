@@ -7,4 +7,8 @@
     <RootNamespace>Text_Editor</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+  </ItemGroup>
+
 </Project>
