@@ -5,6 +5,7 @@ using Text_Editor.Models;
 
 namespace Text_Editor.Controllers
 {
+    // This controller is used for login registration and validating user
     public class HomeController : Controller
     {
         //private readonly ILogger<HomeController> _logger;
@@ -20,12 +21,14 @@ namespace Text_Editor.Controllers
 
         public IActionResult Index()
         {
+            // The home page of application
             Console.WriteLine("entered index method");
             return View();
         }
 
         public bool validateUser(string userId, string password)
         {
+            // Validating the user credentails
             Console.WriteLine("entered validateUser method");
             try
             {
@@ -41,7 +44,6 @@ namespace Text_Editor.Controllers
                     Console.WriteLine("inside whike");
                     getPassword = (string)reader["userPassword"];
                 }
-                //Console.WriteLine("reader value: " + (string)reader["userPassword"]);
                 Console.WriteLine("passsowrds:  " + getPassword + " " + password);
                 if (password.Equals(getPassword))
                 {
@@ -66,6 +68,7 @@ namespace Text_Editor.Controllers
 
         public IActionResult Index(string userid, string password, Users user)
         {
+            // validating and redirecting the user page 
             try
             {
                 Console.WriteLine("in post index: ");
@@ -74,9 +77,6 @@ namespace Text_Editor.Controllers
                 Console.WriteLine("user.id: " + user.userId);
                 if (validateUser(userid, password))
                 {
-                    //Console.WriteLine("validaed user");
-                    //Console.WriteLine("userid in index page "+user.userId);
-                    //               Console.WriteLine("userid: from string " + userid);
                     return RedirectToAction("userPage", "User", new { userId = userid });
                 }
                 else
@@ -101,6 +101,7 @@ namespace Text_Editor.Controllers
         }
         public void insertUser(Users user)
         {
+            // TO insert a new user 
             Console.WriteLine("inside insert user");
             try
             {
@@ -129,6 +130,7 @@ namespace Text_Editor.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(Users user)
         {
+            // Registration of new user and redirect to login page upon successsfull registration
             try
             {
                 //Console.WriteLine("phone nmber: "+user.phoneNumber);

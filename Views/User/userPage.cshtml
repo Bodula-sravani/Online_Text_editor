@@ -138,6 +138,9 @@
 					<td>
 						@Html.ActionLink("Details", "Details", new { id=ViewBag.documentList.id,userid = @Model.userId})
 					</td>
+					<td>
+						@Html.ActionLink("Delete", "Delete", new { id=ViewBag.documentList.id,userid = @Model.userId})
+					</td>
 						
 					</tr>
 
@@ -151,6 +154,8 @@
 			<input type="submit" value="create a new document" class="btn btn-primary btn-sm">
 		</form>
 	</div>
+	<br/>
+
 	<div>
 		<form action="Exist">
 			<input name="userId" value="@Model.userId" hidden />

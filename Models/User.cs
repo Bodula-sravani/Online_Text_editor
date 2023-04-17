@@ -1,5 +1,6 @@
 ﻿namespace Text_Editor.Models
 {
+    // User model
     public class Users
     {
         public string userId { get; set; }

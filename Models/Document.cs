@@ -1,5 +1,6 @@
 ﻿namespace Text_Editor.Models
 {
+    
     public class Document
     {
         public int id { get; set; }

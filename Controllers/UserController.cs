@@ -16,13 +16,9 @@ namespace Text_Editor.Controllers
 			this.connection = new SqlConnection(configuration.GetConnectionString("DB"));
 
 		}
-		// GET: UserController
-		public ActionResult Index()
-        {
-            return View();
-        }
 		public Users getUser(string userId)
 		{
+            // Get user details by using userid 
 			Console.WriteLine("entered getUser method");
 			Users user = new Users();
 			try
@@ -58,6 +54,7 @@ namespace Text_Editor.Controllers
 
         public Document getDocuments(int id)
         {
+            // Get the document using document id
 			Console.WriteLine("entered get document method");
 			Document doc = new Document();
 			try
@@ -89,16 +86,19 @@ namespace Text_Editor.Controllers
 		}
 		public ActionResult userPage(string userId)
 		{
+            // Gets the user details to display their name on the page and some features
 			Console.WriteLine("user id in user page method: " + userId);
 			Users currentUser = getUser(userId);
             Console.WriteLine("user doc id : " + currentUser.documentId);
             if (currentUser.documentId == -1)
             {
+                // By default doucumentId of user is -1 if he is not assifned to any doc
                 Console.WriteLine("in if cond");
                 ViewBag.documentList = null;
             }
             else
             { 
+                // View bag to store that user doc details and dislay on html page
                 ViewBag.documentList = getDocuments(currentUser.documentId); 
             }
 			Console.WriteLine("user Name: " + currentUser.Name);
@@ -118,6 +118,7 @@ namespace Text_Editor.Controllers
 
 		public void insertDocument(string userId,Document d)
 		{
+            // Inserts a document into document table
             Console.WriteLine("entered insert document  method");
             Console.WriteLine("user id" + userId);
             Console.WriteLine("doc id" + d.id);
@@ -140,8 +141,10 @@ namespace Text_Editor.Controllers
                 Console.WriteLine("error: " + ex.Message);
             }
 
+
             try
             {
+                // Associates that user to that document
                 connection.Open();
                 SqlCommand command = new SqlCommand("updateDoc", connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
@@ -160,6 +163,7 @@ namespace Text_Editor.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(string userId,Document d)
         {
+            // Createas a doc and redirects to userPage
             try
             {
                 Console.WriteLine("in create post method");
@@ -176,6 +180,8 @@ namespace Text_Editor.Controllers
 
         public ActionResult Exist(string userId)
         {
+            // user adds already existing doc and modify it in future
+            
             Console.WriteLine("exist method: " + userId);
             ViewBag.userId = userId;
             return View();
@@ -202,6 +208,7 @@ namespace Text_Editor.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Exist(int id, string userId)
         {
+            // Adds a already exixtsing doc to that user using doc id
 			Console.WriteLine("in Exist post method");
 			Console.WriteLine("user id" + userId);
 			Console.WriteLine("doc id" + id);
@@ -226,6 +233,7 @@ namespace Text_Editor.Controllers
         }
         public void updateDocument(Document d)
         {
+            // Updates the document and sets upated date to today 
             Console.WriteLine("entered update document method");
             try
             {
@@ -269,25 +277,58 @@ namespace Text_Editor.Controllers
         // GET: UserController/Details/5
         public ActionResult Details(int id,string userId)
         {
+            // To view the details of the document
             ViewBag.userId = userId;    
             return View(getDocuments(id));
         }
 
 
         // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id,string userId)
         {
+            
+            ViewBag.userId = userId;
             return View();
         }
 
+        public void deleteDocument(int id)
+        {
+            // Delete docs and unlinks it with all users
+            try
+            {
+                connection.Open();
+                string query = $"delete from documents where Id= @{id}";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+            catch(SqlException e)
+            {
+                throw;
+            }
+            try
+            {
+                connection.Open();
+                string query = $"update users set documentId= {-1} where documentId = {id}";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+            catch (SqlException e)
+            {
+                throw;
+            }
+  
+        }
         // POST: UserController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, string userId,Document d)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                deleteDocument(id);
+                return RedirectToAction("userPage", new { userId = userId });
             }
             catch
             {
