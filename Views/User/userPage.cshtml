@@ -133,7 +133,7 @@
 						@ViewBag.documentList.updatedDate
 						</td>
 						<td>
-						@Html.ActionLink("open", "Edit", new { id=ViewBag.documentList.id})
+						@Html.ActionLink("Open", "Edit", new { id=ViewBag.documentList.id,userid = @Model.userId})
 						</td>
 						
 					</tr>

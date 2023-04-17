@@ -107,7 +107,7 @@ namespace Text_Editor.Controllers
                 ViewBag.documentList = getDocuments(currentUser.documentId); 
             }
 			Console.WriteLine("user Name: " + currentUser.Name);
-
+     
 			return View(currentUser);
 		}
 
@@ -184,19 +184,48 @@ namespace Text_Editor.Controllers
         }
 
         // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id,string userid)
         {
-            return View();
+            Console.WriteLine("in edit method: ");
+            Console.WriteLine("user id: "+userid);
+            Console.WriteLine("doc id: " + id);
+            ViewBag.userId = userid;
+            return View(getDocuments(id));
         }
+        public void updateDocument(Document d)
+        {
+            Console.WriteLine("entered update document method");
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("updateDocument", connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@id", d.id);
+                command.Parameters.AddWithValue("@content", d.content);
+                command.Parameters.AddWithValue("@updatedDate", d.updatedDate);
+                command.Parameters.AddWithValue("@name", d.name);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("error: " + ex.Message);
+            }
 
+        }
         // POST: UserController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id,string userId,Document d)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                Console.WriteLine("inside edit ost method");
+                Console.WriteLine("doc id: " + id);
+                Console.WriteLine("doc id using doc object: " + d.id);
+                Console.WriteLine("user id from viee bag" + userId);
+                updateDocument(d);
+                return RedirectToAction("userPage", new { userId = userId });
             }
             catch
             {
